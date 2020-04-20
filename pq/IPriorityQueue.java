@@ -1,6 +1,6 @@
 package pq;
 
-public interface IPriorityQueue {
-    public boolean insert(int i);    
-    public int removeMin();
+public interface IPriorityQueue<T> {
+    public void insert(T item, int priority) throws HeapFullException;    
+    public T removeMin() throws HeapEmptyException;
 }

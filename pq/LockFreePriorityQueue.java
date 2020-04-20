@@ -1,17 +1,24 @@
 package pq;
 
-public class LockFreePriorityQueue implements IPriorityQueue {
+public class LockFreePriorityQueue<T> implements IPriorityQueue<T> {
 
-    @Override
-    public boolean insert(int i) {
-        // TODO Auto-generated method stub
-        return false;
+    public class PQNode<S> {
+        S item;
+        int priority;
+
+        public void set(final S item, final int priority) {
+            this.item = item;
+            this.priority = priority;
+        }
     }
 
     @Override
-    public int removeMin() {
-        // TODO Auto-generated method stub
-        return 0;
+    public void insert(T item, int priority) throws HeapFullException {
+    }
+
+    @Override
+    public T removeMin() throws HeapEmptyException {
+        return null;
     }
 
 }
