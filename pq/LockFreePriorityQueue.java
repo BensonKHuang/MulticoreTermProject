@@ -13,11 +13,11 @@ public class LockFreePriorityQueue<T> implements IPriorityQueue<T> {
     }
 
     @Override
-    public void insert(T item, int priority) throws HeapFullException {
+    public void insert(T item, int priority){
     }
 
     @Override
-    public T removeMin() throws HeapEmptyException {
+    public T removeMin() {
         return null;
     }
 

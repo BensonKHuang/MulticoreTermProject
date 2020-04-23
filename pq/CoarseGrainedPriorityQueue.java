@@ -13,11 +13,9 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     }
 
     private int size;
-    private final int capacity;
     private final PQNode<T>[] pq;
 
     public CoarseGrainedPriorityQueue(final int capacity) {
-        this.capacity = capacity;
         size = 0;
         pq = (PQNode<T>[]) new PQNode[capacity];
         for (int i = 0; i < capacity; i++) {
@@ -97,27 +95,17 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     }
 
     @Override
-    public synchronized void insert(final T item, final int priority) throws HeapFullException {
-        if (size == capacity) {
-            throw new HeapFullException();
-        }
-        pq[size].set(item, priority);;
-        size += 1;
+    public synchronized void insert(final T item, final int priority) {
+        pq[size++].set(item, priority);;
         heapifyUp();
     }
 
     @Override
-    public synchronized T removeMin() throws HeapEmptyException {
-        if (size == 0) {
-            throw new HeapEmptyException();
-        }
-        
+    public synchronized T removeMin() {
         final T res = pq[0].item;
-        size -= 1;
-        pq[0] = pq[size];
+        pq[0] = pq[--size];
         heapifyDown();
 
         return res;
     }
-
 }
