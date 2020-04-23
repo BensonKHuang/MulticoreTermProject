@@ -172,7 +172,7 @@ public class FineGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
                 pq[left].unlock();
                 break;
             // Left child swap path
-            } else if (pq[right].status == Status.EMPTY) {
+            } else if (pq[right].status == Status.EMPTY || pq[left].priority < pq[right].priority) {
                 pq[right].unlock();
                 child = left;
             // Right child swap path
