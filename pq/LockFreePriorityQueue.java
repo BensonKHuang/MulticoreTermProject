@@ -1,6 +1,6 @@
 package pq;
 
-public class LockFreePriorityQueue<T> implements IPriorityQueue<T> {
+public class LockFreePriorityQueue<T> implements pq.IPriorityQueue<T> {
 
     public class PQNode<S> {
         S item;

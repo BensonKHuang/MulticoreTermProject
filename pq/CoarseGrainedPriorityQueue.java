@@ -64,9 +64,14 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     }
 
     private void swap(final int index1, final int index2) {
-        final PQNode<T> temp = pq[index1];
-        pq[index1] = pq[index2];
-        pq[index2] = temp;
+        int tmpP = pq[index1].priority;
+        T tempI = pq[index1].item;
+
+        pq[index1].priority = pq[index2].priority;
+        pq[index1].item = pq[index2].item;
+
+        pq[index2].priority = tmpP;
+        pq[index2].item = tempI;
     }
 
     private void heapifyDown() {

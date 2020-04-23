@@ -10,29 +10,33 @@ public class SimpleTest {
 
     @Test
     public void testCoarseGrained_basic_sequential() {
-        IPriorityQueue<Integer> pq = new CoarseGrainedPriorityQueue<Integer>(2000);
+        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(2000);
         test_basic_sequential(pq); 
     }
 
     @Test
     public void testFineGrained_basic_sequential() {
-        IPriorityQueue<Integer> pq = new FineGrainedPriorityQueue<Integer>(2000);
+        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(2000);
         test_basic_sequential(pq);
     }
 
     @Test
     public void testCoarseGrained_basic_concurrent() {
-        IPriorityQueue<Integer> pq = new CoarseGrainedPriorityQueue<Integer>(5000);
-        test_basic_concurrent(2, 100, pq);
+        long startTime = System.currentTimeMillis();
+        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(1000000);
+        test_basic_concurrent(10, 5000, pq);
+        System.out.println("time" + (System.currentTimeMillis() - startTime));
     }
 
     @Test
     public void testFineGrained_basic_concurrent() {
-        IPriorityQueue<Integer> pq = new FineGrainedPriorityQueue<Integer>(5000);
-        test_basic_concurrent(2, 2000, pq);
+        long startTime = System.currentTimeMillis();
+        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(1000000);
+        test_basic_concurrent(10, 5000, pq);
+        System.out.println("time" + (System.currentTimeMillis() - startTime));
     }
 
-    public void test_basic_sequential(IPriorityQueue<Integer> pq) {
+    public void test_basic_sequential(pq.IPriorityQueue<Integer> pq) {
         Random r = new Random();
         for (int i = 0; i < 1000; i++) {
             int num = r.nextInt(1000);
@@ -49,11 +53,11 @@ public class SimpleTest {
         }
     }
 
-    public void test_basic_concurrent(int threadNums, int threadAmount, IPriorityQueue<Integer> pq) {
+    public void test_basic_concurrent(int threadNums, int threadAmount, pq.IPriorityQueue<Integer> pq) {
         makeThread(threadNums, threadAmount, pq);
     }
 
-    private void makeThread(int threadNums, int threadAmount, IPriorityQueue<Integer> pq) { 
+    private void makeThread(int threadNums, int threadAmount, pq.IPriorityQueue<Integer> pq) {
         Thread[] threads = new Thread[threadNums];
         
         for (int i = 0; i < threadNums; i++) {
@@ -78,9 +82,9 @@ public class SimpleTest {
         Random rand;
         int count;
         int id;
-        IPriorityQueue<Integer> pq;
+        pq.IPriorityQueue<Integer> pq;
 
-        MyThread(int id, int count, IPriorityQueue<Integer> pq) {
+        MyThread(int id, int count, pq.IPriorityQueue<Integer> pq) {
             this.id = id;
             this.rand = new Random();    
             this.count = count;
@@ -91,13 +95,13 @@ public class SimpleTest {
         public void run() {
             for (int i = 0; i <= count; ++i) {
                 int num = rand.nextInt(count);
-                System.out.println(id + " Insert: " + num);
+                //System.out.println(id + " Insert: " + num);
                 pq.insert(num, num);
             }
 
             for (int i = 0; i <= count; i+=2) {
                 int num = pq.removeMin();
-                System.out.println(id + "      Remove: " + num);
+                //System.out.println(id + "      Remove: " + num);
             }
         }
     }

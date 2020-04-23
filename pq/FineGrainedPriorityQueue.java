@@ -74,9 +74,18 @@ public class FineGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     }
 
     private void swap(final int index1, final int index2) {
-        final PQNode<T> temp = pq[index1];
-        pq[index1] = pq[index2];
-        pq[index2] = temp;
+        int tempPriority = pq[index1].priority;
+        T tempItem = pq[index1].item;
+        Status tempStatus = pq[index1].status;
+        long tempOwner = pq[index1].owner;
+        pq[index1].priority = pq[index2].priority;
+        pq[index1].item = pq[index2].item;
+        pq[index1].status = pq[index2].status;
+        pq[index1].owner = pq[index2].owner;
+        pq[index2].priority = tempPriority;
+        pq[index2].item = tempItem;
+        pq[index2].status = tempStatus;
+        pq[index2].owner = tempOwner;
     }
     
 
@@ -163,7 +172,7 @@ public class FineGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
                 pq[left].unlock();
                 break;
             // Left child swap path
-            } else if (pq[right].status == Status.EMPTY || pq[left].priority < pq[right].priority) {
+            } else if (pq[right].status == Status.EMPTY) {
                 pq[right].unlock();
                 child = left;
             // Right child swap path
