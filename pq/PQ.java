@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class PQ {
+public class PQ<T> {
     private class Node {
         int key;
         int level;
