@@ -40,41 +40,41 @@ Our `mvn test -Dtest=ConcurrentTest` tests perform 60,000 insertions and deletio
 [INFO] Running pq.ConcurrentTest
 Lock Free Skip PQ
         Thread Count: [1], Work per thread: [60000] insert/removals.
-        time: [1173] ms
+        time: [1174] ms
         Thread Count: [2], Work per thread: [30000] insert/removals.
-        time: [642] ms
+        time: [682] ms
         Thread Count: [3], Work per thread: [20000] insert/removals.
-        time: [566] ms
+        time: [595] ms
         Thread Count: [4], Work per thread: [15000] insert/removals.
-        time: [273] ms
+        time: [276] ms
         Thread Count: [5], Work per thread: [12000] insert/removals.
         time: [181] ms
         Thread Count: [6], Work per thread: [10000] insert/removals.
-        time: [183] ms
+        time: [193] ms
 Course Grained Lock PQ
         Thread Count: [1], Work per thread: [60000] insert/removals.
-        time: [1313] ms
+        time: [29] ms
         Thread Count: [2], Work per thread: [30000] insert/removals.
-        time: [880] ms
+        time: [25] ms
         Thread Count: [3], Work per thread: [20000] insert/removals.
-        time: [333] ms
+        time: [18] ms
         Thread Count: [4], Work per thread: [15000] insert/removals.
-        time: [272] ms
+        time: [17] ms
         Thread Count: [5], Work per thread: [12000] insert/removals.
-        time: [225] ms
+        time: [20] ms
         Thread Count: [6], Work per thread: [10000] insert/removals.
-        time: [225] ms
+        time: [20] ms
 Fine Grained Lock PQ
         Thread Count: [1], Work per thread: [60000] insert/removals.
-        time: [2322] ms
+        time: [98] ms
         Thread Count: [2], Work per thread: [30000] insert/removals.
-        time: [859] ms
+        time: [169] ms
         Thread Count: [3], Work per thread: [20000] insert/removals.
-        time: [419] ms
+        time: [214] ms
         Thread Count: [4], Work per thread: [15000] insert/removals.
-        time: [227] ms
+        time: [200] ms
         Thread Count: [5], Work per thread: [12000] insert/removals.
-        time: [195] ms
+        time: [193] ms
         Thread Count: [6], Work per thread: [10000] insert/removals.
-        time: [149] ms
+        time: [217] ms
 ```

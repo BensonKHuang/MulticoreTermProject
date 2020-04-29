@@ -11,7 +11,7 @@ public class ConcurrentTest {
         System.out.println("Course Grained Lock PQ");
         pq.IPriorityQueue<Integer> pq;
         for (int i = 1; i <= THREADMAX; i++) {
-            pq = new pq.LFPrioritySkipQueue<Integer>();
+            pq = new pq.CoarseGrainedPriorityQueue<Integer>();
             test_basic_concurrent(i, THREADTOTAL / i, pq);
         }
     }
@@ -21,7 +21,7 @@ public class ConcurrentTest {
         System.out.println("Fine Grained Lock PQ");
         pq.IPriorityQueue<Integer> pq;
         for (int i = 1; i <= THREADMAX; i++) {
-            pq = new pq.LFPrioritySkipQueue<Integer>();
+            pq = new pq.FineGrainedPriorityQueue<Integer>();
             test_basic_concurrent(i, THREADTOTAL / i, pq);
         }
     }
