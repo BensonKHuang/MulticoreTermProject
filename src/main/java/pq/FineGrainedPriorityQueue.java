@@ -49,12 +49,14 @@ public class FineGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     private final static int NO_OWNER = -1;
 
     private int pos;
-    private final PQNode<T>[] pq;
+    private int capacity;
+    private PQNode<T>[] pq;
     private Lock pqLock;
 
-    public FineGrainedPriorityQueue(final int capacity) {
+    public FineGrainedPriorityQueue() {
         this.pqLock = new ReentrantLock();
         pos = 1;
+        capacity = 10000;
         pq = (PQNode<T>[]) new PQNode[capacity + 1];
         for (int i = 0; i < capacity + 1; i++) {
             pq[i] = new PQNode<T>();
@@ -87,13 +89,34 @@ public class FineGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
         pq[index2].status = tempStatus;
         pq[index2].owner = tempOwner;
     }
+
+    private void checkCapacity() {
+        if (pos == capacity + 1) {
+            // grow size by 1.5 (based on how java arrayList grows capacity)
+            PQNode<T>[] newPq = (PQNode<T>[]) new PQNode[(capacity * 3 / 2 + 1) + 1];
+            for (int i = 0; i < capacity + 1; i++) {
+                newPq[i] = new PQNode<T>();
+                newPq[i].priority = pq[i].priority;
+                newPq[i].item = pq[i].item;
+                newPq[i].owner = pq[i].owner;
+                newPq[i].status = pq[i].status;
+                newPq[i].lock = pq[i].lock;
+            }
+            for (int i = capacity + 1; i < (capacity * 3 / 2 + 1) + 1; i++) {
+                newPq[i] = new PQNode<T>();
+            }
+            capacity = capacity * 3 / 2 + 1;
+            pq = newPq;
+        }
+    }
     
 
     @Override
     public void insert(T item, int priority) {
         
         // Lock whole heap to initialize heap without deadlock
-        pqLock.lock(); 
+        pqLock.lock();
+        checkCapacity();
         int child = pos++;
         pq[child].lock();
         pq[child].set(item, priority);

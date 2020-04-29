@@ -8,13 +8,13 @@ public class SimpleTest {
     // Sequential Tests
     @Test
     public void testCoarseGrained_basic_sequential() {
-        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(200000);
+        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>();
         test_basic_sequential(pq); 
     }
 
     @Test
     public void testFineGrained_basic_sequential() {
-        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(200000);
+        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>();
         test_basic_sequential(pq);
     }
 
@@ -34,26 +34,26 @@ public class SimpleTest {
 
     @Test
     public void testCoarseGrained_basic_concurrent() {
-        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(1000000);
-        test_basic_concurrent(12, 10000, pq);
+        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>();
+        test_basic_concurrent(6, 10000, pq);
     }
 
     @Test
     public void testFineGrained_basic_concurrent() {
-        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(1000000);
-        test_basic_concurrent(12, 10000, pq);
+        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>();
+        test_basic_concurrent(6, 10000, pq);
     }
 
     @Test
     public void testLFPriorityQueue_basic_concurrent() {
         pq.IPriorityQueue<Integer> pq = new pq.LFPriorityQueue<Integer>();
-        test_basic_concurrent(12, 10000, pq);
+        test_basic_concurrent(6, 10000, pq);
     }
 
     @Test
     public void testLFSkipQueue_basic_concurrent() {
         pq.IPriorityQueue<Integer> pq = new pq.LFPrioritySkipQueue<Integer>();
-        test_basic_concurrent(12, 10000, pq);
+        test_basic_concurrent(6, 10000, pq);
     }
 
 

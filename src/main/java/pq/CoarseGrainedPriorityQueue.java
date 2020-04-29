@@ -13,10 +13,12 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     }
 
     private int size;
-    private final PQNode<T>[] pq;
+    private int capacity;
+    private PQNode<T>[] pq;
 
-    public CoarseGrainedPriorityQueue(final int capacity) {
+    public CoarseGrainedPriorityQueue() {
         size = 0;
+        capacity = 10000;
         pq = (PQNode<T>[]) new PQNode[capacity];
         for (int i = 0; i < capacity; i++) {
             pq[i] = new PQNode<T>();
@@ -74,6 +76,23 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
         pq[index2].item = tempI;
     }
 
+    private void checkCapacity() {
+        if (size == capacity) {
+            // grow size by 1.5 (based on how java arrayList grows capacity)
+            PQNode<T>[] newPq = (PQNode<T>[]) new PQNode[capacity * 3 / 2 + 1];
+            for (int i = 0; i < capacity; i++) {
+                newPq[i] = new PQNode<T>();
+                newPq[i].priority = pq[i].priority;
+                newPq[i].item = pq[i].item;
+            }
+            for (int i = capacity; i < capacity * 3 / 2 + 1; i++) {
+                newPq[i] = new PQNode<T>();
+            }
+            capacity = capacity * 3 / 2 + 1;
+            pq = newPq;
+        }
+    }
+
     private void heapifyDown() {
         int index = 0;
         while (hasLeftChild(index)) {
@@ -101,6 +120,7 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
 
     @Override
     public synchronized void insert(final T item, final int priority) {
+        checkCapacity();
         pq[size++].set(item, priority);;
         heapifyUp();
     }
