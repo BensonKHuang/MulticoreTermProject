@@ -1,7 +1,5 @@
 package pq;
 
-import static org.junit.Assert.fail;
-
 import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,19 +19,27 @@ public class SimpleTest {
     }
 
     @Test
+    public void testLFPriorityQueue_basic_sequential() {
+        pq.IPriorityQueue<Integer> pq = new pq.LFPriorityQueue<Integer>();
+        test_basic_sequential(pq);
+    }
+
+    @Test
     public void testCoarseGrained_basic_concurrent() {
-        long startTime = System.currentTimeMillis();
         pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(1000000);
-        test_basic_concurrent(10, 5000, pq);
-        System.out.println("time" + (System.currentTimeMillis() - startTime));
+        test_basic_concurrent(6, 10000, pq);
     }
 
     @Test
     public void testFineGrained_basic_concurrent() {
-        long startTime = System.currentTimeMillis();
         pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(1000000);
-        test_basic_concurrent(10, 5000, pq);
-        System.out.println("time" + (System.currentTimeMillis() - startTime));
+        test_basic_concurrent(6, 10000, pq);
+    }
+
+    @Test
+    public void testLFPriorityQueue_basic_concurrent() {
+        pq.IPriorityQueue<Integer> pq = new pq.LFPriorityQueue<Integer>();
+        test_basic_concurrent(6, 10000, pq);
     }
 
     public void test_basic_sequential(pq.IPriorityQueue<Integer> pq) {
@@ -54,7 +60,10 @@ public class SimpleTest {
     }
 
     public void test_basic_concurrent(int threadNums, int threadAmount, pq.IPriorityQueue<Integer> pq) {
+        long startTime = System.nanoTime();
         makeThread(threadNums, threadAmount, pq);
+        long endTime = System.nanoTime();
+        System.out.println("time (ms): " + ((endTime - startTime) / 1000000));
     }
 
     private void makeThread(int threadNums, int threadAmount, pq.IPriorityQueue<Integer> pq) {
@@ -95,13 +104,13 @@ public class SimpleTest {
         public void run() {
             for (int i = 0; i <= count; ++i) {
                 int num = rand.nextInt(count);
-                //System.out.println(id + " Insert: " + num);
+                // System.out.println(id + " Insert: " + num);
                 pq.insert(num, num);
             }
 
             for (int i = 0; i <= count; i+=2) {
                 int num = pq.removeMin();
-                //System.out.println(id + "      Remove: " + num);
+                // System.out.println(id + "      Remove: " + num);
             }
         }
     }
