@@ -33,11 +33,11 @@ public class LFPrioritySkipQueue<T> implements IPriorityQueue<T> {
         skiplist = new PrioritySkipList<T>();
     }
 
-    private class Node<E> {
-        final E value;
+    public static final class Node<T> {
+        final T value;
         final int key;
         AtomicBoolean marked;
-        final AtomicMarkableReference<Node<E>>[] next;
+        final AtomicMarkableReference<Node<T>>[] next;
         private int topLevel;
 
         // constructor for sentinel nodes
@@ -45,77 +45,79 @@ public class LFPrioritySkipQueue<T> implements IPriorityQueue<T> {
             this.value = null;
             this.key = key;
             this.marked = new AtomicBoolean(false);
-            next = (AtomicMarkableReference<Node<E>>[]) new AtomicMarkableReference[MAX_LEVEL + 1];
+            next = (AtomicMarkableReference<Node<T>>[]) new AtomicMarkableReference[MAX_LEVEL + 1];
             for (int i = 0; i < next.length; i++) {
-                next[i] = new AtomicMarkableReference<Node<E>>(null, false);
+                next[i] = new AtomicMarkableReference<Node<T>>(null, false);
             }
             topLevel = MAX_LEVEL;
         }
 
         // constructor for ordinary nodes
-        public Node(E x, int priority, int height) {
+        public Node(T x, int priority, int height) {
             this.value = x;
             this.key = priority;
             this.marked = new AtomicBoolean(false);
-            next = (AtomicMarkableReference<Node<E>>[]) new AtomicMarkableReference[height + 1];
+            next = (AtomicMarkableReference<Node<T>>[]) new AtomicMarkableReference[height + 1];
             for (int i = 0; i < next.length; i++) {
-                next[i] = new AtomicMarkableReference<Node<E>>(null, false);
+                next[i] = new AtomicMarkableReference<Node<T>>(null, false);
             }
             topLevel = height;
         }
     }
 
-    private class PrioritySkipList<S> {
-        final Node<S> head = new Node<S>(Integer.MIN_VALUE);
-        final Node<S> tail = new Node<S>(Integer.MAX_VALUE);
+    public static final class PrioritySkipList<T> {
+        final Node<T> head = new Node<T>(Integer.MIN_VALUE);
+        final Node<T> tail = new Node<T>(Integer.MAX_VALUE);
 
         public PrioritySkipList() {
             for (int i = 0; i < head.next.length; i++) {
-                head.next[i] = new AtomicMarkableReference<Node<S>>(tail, false);
+                head.next[i] = new AtomicMarkableReference<Node<T>>(tail, false);
             }
         }
 
-        boolean add(Node<S> node) {
+        boolean add(Node<T> node) {
             int key = node.key;
             int bottomLevel = 0;
             int topLevel = node.topLevel;
-            Node<S>[] preds = (Node<S>[]) new Node[MAX_LEVEL + 1];
-            Node<S>[] succs = (Node<S>[]) new Node[MAX_LEVEL + 1];
+            Node<T>[] preds = (Node<T>[]) new Node[MAX_LEVEL + 1];
+            Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL + 1];
             while (true) {
-                boolean found = find((S) node.value, key, preds, succs);
+                boolean found = find((T) node.value, key, preds, succs);
+                
+                // Prevent Duplicates
                 if (found) {
                     return false;
-                } else {
-                    Node<S> newNode = node;
-                    for (int level = bottomLevel; level <= topLevel; level++) {
-                        Node<S> succ = succs[level];
-                        newNode.next[level].set(succ, false);
-                    }
-                    Node<S> pred = preds[bottomLevel];
-                    Node<S> succ = succs[bottomLevel];
-                    newNode.next[bottomLevel].set(succ, false);
-                    if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
-                        continue;
-                    }
-                    for (int level = bottomLevel + 1; level <= topLevel; level++) {
-                        while (true) {
-                            pred = preds[level];
-                            succ = succs[level];
-                            if (pred.next[level].compareAndSet(succ, newNode, false, false))
-                                break;
-                            find((S) node.value, key, preds, succs);
-                        }
-                    }
-                    return true;
                 }
+
+                Node<T> newNode = node;
+                for (int level = bottomLevel; level <= topLevel; level++) {
+                    Node<T> succ = succs[level];
+                    newNode.next[level].set(succ, false);
+                }
+                Node<T> pred = preds[bottomLevel];
+                Node<T> succ = succs[bottomLevel];
+                newNode.next[bottomLevel].set(succ, false);
+                if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
+                    continue;
+                }
+                for (int level = bottomLevel + 1; level <= topLevel; level++) {
+                    while (true) {
+                        pred = preds[level];
+                        succ = succs[level];
+                        if (pred.next[level].compareAndSet(succ, newNode, false, false))
+                            break;
+                        find((T) node.value, key, preds, succs);
+                    }
+                }
+                return true;
             }
         }
 
-        boolean find(S x, int key, Node<S>[] preds, Node<S>[] succs) {
+        boolean find(T x, int key, Node<T>[] preds, Node<T>[] succs) {
             int bottomLevel = 0;
             boolean[] marked = { false };
             boolean snip;
-            Node<S> pred = null, curr = null, succ = null;
+            Node<T> pred = null, curr = null, succ = null;
             retry: while (true) {
                 pred = head;
                 for (int level = MAX_LEVEL; level >= bottomLevel; level--) {
@@ -143,43 +145,42 @@ public class LFPrioritySkipQueue<T> implements IPriorityQueue<T> {
             }
         }
 
-        boolean remove(Node<S> node) {
+        boolean remove(Node<T> node) {
             int key = node.key;
             int bottomLevel = 0;
-            Node<S>[] preds = (Node<S>[]) new Node[MAX_LEVEL + 1];
-            Node<S>[] succs = (Node<S>[]) new Node[MAX_LEVEL + 1];
-            Node<S> succ;
+            Node<T>[] preds = (Node<T>[]) new Node[MAX_LEVEL + 1];
+            Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL + 1];
+            Node<T> succ;
             while (true) {
-                boolean found = find((S) node.value, key, preds, succs);
+                boolean found = find((T) node.value, key, preds, succs);
                 if (!found) {
                     return false;
-                } else {
-                    Node<S> nodeToRemove = succs[bottomLevel];
-                    for (int level = nodeToRemove.topLevel; level >= bottomLevel + 1; level--) {
-                        boolean[] marked = { false };
-                        succ = nodeToRemove.next[level].get(marked);
-                        while (!marked[0]) {
-                            nodeToRemove.next[level].attemptMark(succ, true);
-                            succ = nodeToRemove.next[level].get(marked);
-                        }
-                    }
+                }
+                Node<T> nodeToRemove = succs[bottomLevel];
+                for (int level = nodeToRemove.topLevel; level >= bottomLevel + 1; level--) {
                     boolean[] marked = { false };
-                    succ = nodeToRemove.next[bottomLevel].get(marked);
-                    while (true) {
-                        boolean iMarkedIt = nodeToRemove.next[bottomLevel].compareAndSet(succ, succ, false, true);
-                        succ = succs[bottomLevel].next[bottomLevel].get(marked);
-                        if (iMarkedIt) {
-                            find((S) node.value, key, preds, succs);
-                            return true;
-                        } else if (marked[0])
-                            return false;
+                    succ = nodeToRemove.next[level].get(marked);
+                    while (!marked[0]) {
+                        nodeToRemove.next[level].attemptMark(succ, true);
+                        succ = nodeToRemove.next[level].get(marked);
                     }
+                }
+                boolean[] marked = { false };
+                succ = nodeToRemove.next[bottomLevel].get(marked);
+                while (true) {
+                    boolean iMarkedIt = nodeToRemove.next[bottomLevel].compareAndSet(succ, succ, false, true);
+                    succ = succs[bottomLevel].next[bottomLevel].get(marked);
+                    if (iMarkedIt) {
+                        find((T) node.value, key, preds, succs);
+                        return true;
+                    } else if (marked[0])
+                        return false;
                 }
             }
         }
 
-        public Node<S> findAndMarkMin() {
-            Node<S> curr = null;
+        public Node<T> findAndMarkMin() {
+            Node<T> curr = null;
             curr = head.next[0].getReference();
             while (curr != tail) {
                 if (!curr.marked.get()) {
