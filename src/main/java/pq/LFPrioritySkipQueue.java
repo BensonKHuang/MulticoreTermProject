@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicMarkableReference;
 public class LFPrioritySkipQueue<T> implements IPriorityQueue<T> {
     // Precodition: There is always space for another PQ
     final static int MAX_LEVEL = 40;
-    Random random = new Random();
+    Random random = new Random(50);
 
     @Override
     public void insert(T item, int priority) {

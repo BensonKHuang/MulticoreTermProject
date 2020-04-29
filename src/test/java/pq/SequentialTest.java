@@ -8,24 +8,28 @@ public class SequentialTest {
     // Sequential Tests
     @Test
     public void testCoarseGrained_basic_sequential() {
+        System.out.println("Coarse Grained Lock PQ");
         pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>();
         test_basic_sequential(pq); 
     }
 
     @Test
     public void testFineGrained_basic_sequential() {
+        System.out.println("Fine Grained Lock PQ");
         pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>();
         test_basic_sequential(pq);
     }
 
-    @Test
-    public void testLFPriorityQueue_basic_sequential() {
-        pq.IPriorityQueue<Integer> pq = new pq.LFPriorityQueue<Integer>();
-        test_basic_sequential(pq);
-    }
+    // @Test
+    // public void testLFPriorityQueue_basic_sequential() {
+    //     System.out.println("Lock Free PQ");
+    //     pq.IPriorityQueue<Integer> pq = new pq.LFPriorityQueue<Integer>();
+    //     test_basic_sequential(pq);
+    // }
 
     @Test
     public void testLFPrioritySkipQueue_basic_sequential() {
+        System.out.println("Lock Free Skip PQ");
         pq.IPriorityQueue<Integer> pq = new pq.LFPrioritySkipQueue<Integer>();
         test_basic_sequential(pq);
     }
@@ -33,14 +37,14 @@ public class SequentialTest {
     // Helper Functions
     public void test_basic_sequential(pq.IPriorityQueue<Integer> pq) {
         long startTime = System.nanoTime();
-
-        for (int i = 0; i < 1000; i++) {
+        int amount = 60000;
+        for (int i = 0; i < amount; i++) {
             // System.out.println("Insert: " + i);
             pq.insert(i, i);
         }
         int min = Integer.MIN_VALUE;
         int temp;
-        for(int i = 0; i < 1000; i++) {
+        for(int i = 0; i < amount; i++) {
             temp = pq.removeMin();
             // System.out.println("Remove: " + temp);
             Assert.assertTrue(min <= temp);
@@ -48,6 +52,7 @@ public class SequentialTest {
         }
 
         long endTime = System.nanoTime();
-        System.out.println("time (ms): " + ((endTime - startTime) / 1000000));
+        System.out.println("\tWork: [" + amount + "] inserts/removal");
+        System.out.println("\ttime: [" + ((endTime - startTime) / 1000000) + "] ms");
     }
 }
