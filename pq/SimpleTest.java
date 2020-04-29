@@ -1,20 +1,20 @@
 package pq;
 
-import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class SimpleTest {
 
+    // Sequential Tests
     @Test
     public void testCoarseGrained_basic_sequential() {
-        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(2000);
+        pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(200000);
         test_basic_sequential(pq); 
     }
 
     @Test
     public void testFineGrained_basic_sequential() {
-        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(2000);
+        pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(200000);
         test_basic_sequential(pq);
     }
 
@@ -25,29 +25,45 @@ public class SimpleTest {
     }
 
     @Test
+    public void testLFPrioritySkipQueue_basic_sequential() {
+        pq.IPriorityQueue<Integer> pq = new pq.LFPrioritySkipQueue<Integer>();
+        test_basic_sequential(pq);
+    }
+
+    // Concurrent Tests
+
+    @Test
     public void testCoarseGrained_basic_concurrent() {
         pq.IPriorityQueue<Integer> pq = new pq.CoarseGrainedPriorityQueue<Integer>(1000000);
-        test_basic_concurrent(6, 10000, pq);
+        test_basic_concurrent(12, 10000, pq);
     }
 
     @Test
     public void testFineGrained_basic_concurrent() {
         pq.IPriorityQueue<Integer> pq = new pq.FineGrainedPriorityQueue<Integer>(1000000);
-        test_basic_concurrent(6, 10000, pq);
+        test_basic_concurrent(12, 10000, pq);
     }
 
     @Test
     public void testLFPriorityQueue_basic_concurrent() {
         pq.IPriorityQueue<Integer> pq = new pq.LFPriorityQueue<Integer>();
-        test_basic_concurrent(6, 10000, pq);
+        test_basic_concurrent(12, 10000, pq);
     }
 
+    @Test
+    public void testLFSkipQueue_basic_concurrent() {
+        pq.IPriorityQueue<Integer> pq = new pq.LFPrioritySkipQueue<Integer>();
+        test_basic_concurrent(12, 10000, pq);
+    }
+
+
+    // Helper Functions
     public void test_basic_sequential(pq.IPriorityQueue<Integer> pq) {
-        Random r = new Random();
+        long startTime = System.nanoTime();
+
         for (int i = 0; i < 1000; i++) {
-            int num = r.nextInt(1000);
-            // System.out.println("Insert: " + num);
-            pq.insert(num, num);
+            // System.out.println("Insert: " + i);
+            pq.insert(i, i);
         }
         int min = Integer.MIN_VALUE;
         int temp;
@@ -57,6 +73,9 @@ public class SimpleTest {
             Assert.assertTrue(min <= temp);
             min = temp;
         }
+
+        long endTime = System.nanoTime();
+        System.out.println("time (ms): " + ((endTime - startTime) / 1000000));
     }
 
     public void test_basic_concurrent(int threadNums, int threadAmount, pq.IPriorityQueue<Integer> pq) {
@@ -88,14 +107,12 @@ public class SimpleTest {
 
     private class MyThread implements Runnable {
         
-        Random rand;
         int count;
         int id;
         pq.IPriorityQueue<Integer> pq;
 
         MyThread(int id, int count, pq.IPriorityQueue<Integer> pq) {
             this.id = id;
-            this.rand = new Random();    
             this.count = count;
             this.pq = pq;
         }
@@ -103,7 +120,7 @@ public class SimpleTest {
         @Override
         public void run() {
             for (int i = 0; i <= count; ++i) {
-                int num = rand.nextInt(count);
+                int num = id * count + i; 
                 // System.out.println(id + " Insert: " + num);
                 pq.insert(num, num);
             }
