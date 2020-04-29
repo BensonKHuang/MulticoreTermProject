@@ -10,7 +10,7 @@ Benson Huang, Wesley Klock, Steven (Zijian) Wang, Kyle Zhou
 - Lock-Free Priority Skip Queue
 
 We implemented various Lock Based and Lock Free Priority Queue implementations, with a test suite that automatically compares performance benchmarks.
-We tested using different thread counts and heavy Insert/RemoveMin function calls.One notable feature is the generic implementation of our Priority Queue allows any data structure to be used, as long as it is given a priority. 
+We tested using different thread counts and heavy Insert/RemoveMin function calls. One notable feature is the generic implementation of our Priority Queue allows any data structure to be used, as long as a priority is provided. 
 
 The interface we are using for all our queues are shared: 
 ```java
