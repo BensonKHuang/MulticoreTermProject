@@ -1,11 +1,15 @@
 package pq;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 
 // Concurrent Tests
 public class ConcurrentTest {
     final static int THREADMAX = 6;
-    final static int THREADTOTAL = 60000;
+    final static int THREADTOTAL = 300000;
     @Test
     public void testCoarseGrained_basic_concurrent() {
         System.out.println("Course Grained Lock PQ");
@@ -42,27 +46,15 @@ public class ConcurrentTest {
         makeThread(threadNums, threadAmount, pq);
         long endTime = System.nanoTime();
         System.out.println("\tThread Count: [" + threadNums + "], Work per thread: [" + threadAmount + "] insert/removals.");
-        System.out.println("\ttime: [" + ((endTime - startTime) / 1000000) + "] ms");
+        System.out.println("\tTime in microseconds: [" + ((endTime - startTime) / 1000) + "]");
     }
 
     private void makeThread(int threadNums, int threadAmount, pq.IPriorityQueue<Integer> pq) {
-        Thread[] threads = new Thread[threadNums];
-
+        ExecutorService executor = Executors.newFixedThreadPool(threadNums);
         for (int i = 0; i < threadNums; i++) {
-            threads[i] = new Thread(new MyThread(i, threadAmount, pq));
+            executor.execute(new MyThread(i, threadAmount, pq));
         }
-
-        for (Thread thread : threads) {
-            thread.start();
-        }
-
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        executor.shutdown();
     }
 
     private class MyThread implements Runnable {

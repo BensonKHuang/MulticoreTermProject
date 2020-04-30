@@ -46,6 +46,6 @@ public class SequentialTest {
 
         long endTime = System.nanoTime();
         System.out.println("\tWork: [" + amount + "] inserts/removal");
-        System.out.println("\ttime: [" + ((endTime - startTime) / 1000000) + "] ms");
+        System.out.println("\tTime in microseconds: [" + ((endTime - startTime) / 1000) + "]");
     }
 }

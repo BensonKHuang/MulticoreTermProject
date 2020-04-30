@@ -2,7 +2,7 @@ package pq;
 
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
-public class LFPriorityQueue<T> implements pq.IPriorityQueue<T> {
+public class LFPriorityLinkedQueue<T> implements pq.IPriorityQueue<T> {
 
     // Helper Classes 
     private class PQNode<S> {
@@ -13,7 +13,7 @@ public class LFPriorityQueue<T> implements pq.IPriorityQueue<T> {
         PQNode(S item, int priority, PQNode<S> next) {
             this.item = item;
             this.priority = priority;
-            this.next = new AtomicMarkableReference<LFPriorityQueue<T>.PQNode<S>>(next, false);
+            this.next = new AtomicMarkableReference<PQNode<S>>(next, false);
         }
 
         S getValue() {
@@ -45,7 +45,7 @@ public class LFPriorityQueue<T> implements pq.IPriorityQueue<T> {
         }
     }
 
-    // Positional Helper Class
+    // Positional Helper Class that contain location to insert new node
     private class PositionNodes<S> {
         PQNode<S> left;
         PQNode<S> right;
@@ -73,6 +73,7 @@ public class LFPriorityQueue<T> implements pq.IPriorityQueue<T> {
 
         do {
             PQNode<T> temp = head;
+            // Iterate through ordered linked list until you find left and right values.
             do {
                 if (!temp.isMarked()) {
                     left = temp;
@@ -102,8 +103,13 @@ public class LFPriorityQueue<T> implements pq.IPriorityQueue<T> {
     }
 
     // Implementation
-    private PQNode<T> tail = new PQNode<>(null, Integer.MAX_VALUE, null);
-    private PQNode<T> head = new PQNode<>(null, Integer.MIN_VALUE, tail);
+    private PQNode<T> tail;
+    private PQNode<T> head;
+
+    public LFPriorityLinkedQueue() {
+        tail = new PQNode<>(null, Integer.MAX_VALUE, null);
+        head = new PQNode<>(null, Integer.MIN_VALUE, tail); 
+    }
 
     @Override
     public void insert(T item, int priority) {
