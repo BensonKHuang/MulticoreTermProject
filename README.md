@@ -25,6 +25,25 @@ public interface IPriorityQueue<T> {
 
 # How to run program with mvn commands
 
+## Running command line:
+
+```java
+Concurrent Priority Queue Program takes 3 arguments
+
+args[0]:
+        -c      Coarse Grained PQ
+        -f      Fine Grained PQ
+        -lf     Lock Free PQ
+args[1]:
+        #       Number of Threads
+args[2]:
+        #       Amount of work per threads
+
+Examples:
+        mvn exec:java -Dexec.mainClass=pq.App -Dexec.args="-c 3 100"
+        mvn exec:java -Dexec.mainClass=pq.App -Dexec.args="-lf 4 200"
+```
+
 ## running tests:
 `mvn test`
 

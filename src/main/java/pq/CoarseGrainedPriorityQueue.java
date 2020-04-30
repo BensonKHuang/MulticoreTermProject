@@ -79,16 +79,17 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     private void checkCapacity() {
         if (size == capacity) {
             // grow size by 1.5 (based on how java arrayList grows capacity)
-            PQNode<T>[] newPq = (PQNode<T>[]) new PQNode[capacity * 3 / 2 + 1];
+            int newCapacity = capacity * 3 / 2 + 1;
+            PQNode<T>[] newPq = (PQNode<T>[]) new PQNode[newCapacity];
             for (int i = 0; i < capacity; i++) {
                 newPq[i] = new PQNode<T>();
                 newPq[i].priority = pq[i].priority;
                 newPq[i].item = pq[i].item;
             }
-            for (int i = capacity; i < capacity * 3 / 2 + 1; i++) {
+            for (int i = capacity; i < newCapacity; i++) {
                 newPq[i] = new PQNode<T>();
             }
-            capacity = capacity * 3 / 2 + 1;
+            capacity = newCapacity;
             pq = newPq;
         }
     }

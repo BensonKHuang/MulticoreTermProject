@@ -20,13 +20,6 @@ public class SequentialTest {
         test_basic_sequential(pq);
     }
 
-    // @Test
-    // public void testLFPriorityQueue_basic_sequential() {
-    //     System.out.println("Lock Free PQ");
-    //     pq.IPriorityQueue<Integer> pq = new pq.LFPriorityQueue<Integer>();
-    //     test_basic_sequential(pq);
-    // }
-
     @Test
     public void testLFPrioritySkipQueue_basic_sequential() {
         System.out.println("Lock Free Skip PQ");

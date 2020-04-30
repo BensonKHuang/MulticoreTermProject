@@ -26,16 +26,6 @@ public class ConcurrentTest {
         }
     }
 
-    // @Test
-    // public void testLFPriorityQueue_basic_concurrent() {
-    //     System.out.println("Lock Free PQ");
-    //     pq.IPriorityQueue<Integer> pq;
-    //     for (int i = 1; i <= THREADMAX; i++) {
-    //         pq = new pq.LFPrioritySkipQueue<Integer>();
-    //         test_basic_concurrent(i, THREADTOTAL / i, pq);
-    //     }
-    // }
-
     @Test
     public void testLFSkipQueue_basic_concurrent() {
         System.out.println("Lock Free Skip PQ");

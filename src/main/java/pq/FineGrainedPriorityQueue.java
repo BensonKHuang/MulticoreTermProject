@@ -92,8 +92,9 @@ public class FineGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
 
     private void checkCapacity() {
         if (pos == capacity + 1) {
+            int newCapacity = capacity * 3 / 2 + 1;
             // grow size by 1.5 (based on how java arrayList grows capacity)
-            PQNode<T>[] newPq = (PQNode<T>[]) new PQNode[(capacity * 3 / 2 + 1) + 1];
+            PQNode<T>[] newPq = (PQNode<T>[]) new PQNode[newCapacity + 1];
             for (int i = 0; i < capacity + 1; i++) {
                 newPq[i] = new PQNode<T>();
                 newPq[i].priority = pq[i].priority;
@@ -102,10 +103,10 @@ public class FineGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
                 newPq[i].status = pq[i].status;
                 newPq[i].lock = pq[i].lock;
             }
-            for (int i = capacity + 1; i < (capacity * 3 / 2 + 1) + 1; i++) {
+            for (int i = capacity + 1; i < newCapacity + 1; i++) {
                 newPq[i] = new PQNode<T>();
             }
-            capacity = capacity * 3 / 2 + 1;
+            capacity = newCapacity;
             pq = newPq;
         }
     }
