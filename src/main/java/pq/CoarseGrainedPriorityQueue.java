@@ -2,11 +2,11 @@ package pq;
 
 public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
 
-    public class PQNode<S> {
-        S item;
+    public final static class PQNode<T> {
+        T item;
         int priority;
 
-        public void set(final S item, final int priority) {
+        public void set(final T item, final int priority) {
             this.item = item;
             this.priority = priority;
         }
@@ -17,9 +17,9 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     private PQNode<T>[] pq;
 
     public CoarseGrainedPriorityQueue() {
-        size = 0;
-        capacity = 10000;
-        pq = (PQNode<T>[]) new PQNode[capacity];
+        this.size = 0;
+        this.capacity = 10000;
+        this.pq = (PQNode<T>[]) new PQNode[capacity];
         for (int i = 0; i < capacity; i++) {
             pq[i] = new PQNode<T>();
         }
@@ -122,16 +122,15 @@ public class CoarseGrainedPriorityQueue<T> implements pq.IPriorityQueue<T> {
     @Override
     public synchronized void insert(final T item, final int priority) {
         checkCapacity();
-        pq[size++].set(item, priority);;
+        pq[size++].set(item, priority);
         heapifyUp();
     }
 
     @Override
     public synchronized T removeMin() {
         final T res = pq[0].item;
-        pq[0] = pq[--size];
+        swap(0, --size);
         heapifyDown();
-
         return res;
     }
 }
