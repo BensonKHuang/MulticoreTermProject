@@ -57,10 +57,12 @@ public class App
         long startTime = System.nanoTime();
         makeThread(threadNums, threadAmount, pq);
         long endTime = System.nanoTime();
+        float duration = (endTime - startTime) / 1000000f;
+        String durationString = String.format("%.3f", duration);
         System.out.println();
         System.out.println(name);
         System.out.println("Thread Count: [" + threadNums + "], Work per thread: [" + threadAmount + "] insert/removals.");
-        System.out.println("Time in microseconds: [" + ((endTime - startTime) / 1000) + "]");
+        System.out.println("Time: [" + durationString + "] ms");
     }
 
     private static void makeThread(int threadNums, int threadAmount, pq.IPriorityQueue<Integer> pq) {
@@ -71,8 +73,9 @@ public class App
         executor.shutdown();
         try {
             executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-        } catch (InterruptedException e) {
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("hello world!");
         }
     }
 
