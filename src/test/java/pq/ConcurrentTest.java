@@ -91,20 +91,15 @@ public class ConcurrentTest {
 
         @Override
         public void run() {
-            System.out.println(id + " Start Insert");
             for (int i = 0; i < count; ++i) {
                 int num = (id * count) + i;
                 // System.out.println(id + " Insert: " + num);
                 pq.insert(num, num);
             }
-            System.out.println(id + " Start End");
-
             for (int i = 0; i < count; ++i) {
                 int num = pq.removeMin();
                 // System.out.println(id + " Remove: " + num);
             }
-            System.out.println(id + " Complete");
-
         }
     }
 }

@@ -74,7 +74,7 @@ Examples:
 
 
 ### Concurrent Test Interpretation/Example run
-Our `mvn test -Dtest=ConcurrentTest` tests perform 30,000,000 insertions and deletions divided over 1 to 6 threads.
+Our `mvn test -Dtest=ConcurrentTest` tests perform 30,000 insertions and deletions divided over 1 to 6 threads.
 These values are modifiable in `ConcurrentTest.java`
 
 ```json
@@ -83,42 +83,55 @@ These values are modifiable in `ConcurrentTest.java`
 [INFO] -------------------------------------------------------
 [INFO] Running pq.ConcurrentTest
 Lock Free Skip PQ
-        Thread Count: [1], Work per thread: [30000000] insert/removals.
-        Time: [1.129] ms
-        Thread Count: [2], Work per thread: [15000000] insert/removals.
-        Time: [0.231] ms
-        Thread Count: [3], Work per thread: [10000000] insert/removals.
-        Time: [0.274] ms
-        Thread Count: [4], Work per thread: [7500000] insert/removals.
-        Time: [4.052] ms
-        Thread Count: [5], Work per thread: [6000000] insert/removals.
-        Time: [12.401] ms
-        Thread Count: [6], Work per thread: [5000000] insert/removals.
-        Time: [18.403] ms
+        Thread Count: [1], Work per thread: [30000] insert/removals.
+        Time: [489.798] ms
+        Thread Count: [2], Work per thread: [15000] insert/removals.
+        Time: [220.215] ms
+        Thread Count: [3], Work per thread: [10000] insert/removals.
+        Time: [132.187] ms
+        Thread Count: [4], Work per thread: [7500] insert/removals.
+        Time: [175.080] ms
+        Thread Count: [5], Work per thread: [6000] insert/removals.
+        Time: [76.647] ms
+        Thread Count: [6], Work per thread: [5000] insert/removals.
+        Time: [119.253] ms
+Lock Free Linked PQ
+        Thread Count: [1], Work per thread: [30000] insert/removals.
+        Time: [3645.382] ms
+        Thread Count: [2], Work per thread: [15000] insert/removals.
+        Time: [1314.595] ms
+        Thread Count: [3], Work per thread: [10000] insert/removals.
+        Time: [780.029] ms
+        Thread Count: [4], Work per thread: [7500] insert/removals.
+        Time: [504.773] ms
+        Thread Count: [5], Work per thread: [6000] insert/removals.
+        Time: [385.265] ms
+        Thread Count: [6], Work per thread: [5000] insert/removals.
+        Time: [310.151] ms
 Course Grained Lock PQ
-        Thread Count: [1], Work per thread: [30000000] insert/removals.
-        Time: [4.540] ms
-        Thread Count: [2], Work per thread: [15000000] insert/removals.
-        Time: [3.973] ms
-        Thread Count: [3], Work per thread: [10000000] insert/removals.
-        Time: [10.595] ms
-        Thread Count: [4], Work per thread: [7500000] insert/removals.
-        Time: [5.962] ms
-        Thread Count: [5], Work per thread: [6000000] insert/removals.
-        Time: [8.723] ms
-        Thread Count: [6], Work per thread: [5000000] insert/removals.
-        Time: [14.259] ms
+        Thread Count: [1], Work per thread: [30000] insert/removals.
+        Time: [17.644] ms
+        Thread Count: [2], Work per thread: [15000] insert/removals.
+        Time: [10.171] ms
+        Thread Count: [3], Work per thread: [10000] insert/removals.
+        Time: [12.556] ms
+        Thread Count: [4], Work per thread: [7500] insert/removals.
+        Time: [7.512] ms
+        Thread Count: [5], Work per thread: [6000] insert/removals.
+        Time: [8.713] ms
+        Thread Count: [6], Work per thread: [5000] insert/removals.
+        Time: [7.515] ms
 Fine Grained Lock PQ
-        Thread Count: [1], Work per thread: [30000000] insert/removals.
-        Time: [4.450] ms
-        Thread Count: [2], Work per thread: [15000000] insert/removals.
-        Time: [12.404] ms
-        Thread Count: [3], Work per thread: [10000000] insert/removals.
-        Time: [23.186] ms
-        Thread Count: [4], Work per thread: [7500000] insert/removals.
-        Time: [28.726] ms
-        Thread Count: [5], Work per thread: [6000000] insert/removals.
-        Time: [10.367] ms
-        Thread Count: [6], Work per thread: [5000000] insert/removals.
-        Time: [18.528] ms
+        Thread Count: [1], Work per thread: [30000] insert/removals.
+        Time: [58.806] ms
+        Thread Count: [2], Work per thread: [15000] insert/removals.
+        Time: [68.093] ms
+        Thread Count: [3], Work per thread: [10000] insert/removals.
+        Time: [123.348] ms
+        Thread Count: [4], Work per thread: [7500] insert/removals.
+        Time: [81.265] ms
+        Thread Count: [5], Work per thread: [6000] insert/removals.
+        Time: [89.369] ms
+        Thread Count: [6], Work per thread: [5000] insert/removals.
+        Time: [82.583] ms
 ```

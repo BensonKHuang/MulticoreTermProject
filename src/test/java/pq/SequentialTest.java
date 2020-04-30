@@ -21,6 +21,13 @@ public class SequentialTest {
     }
 
     @Test
+    public void testLFLinkedQueue_basic_concurrent() {
+        System.out.println("Lock Free Linked PQ");
+        pq.IPriorityQueue<Integer> pq = new pq.LFPriorityLinkedQueue<Integer>();
+        test_basic_sequential(pq);
+    }
+
+    @Test
     public void testLFPrioritySkipQueue_basic_sequential() {
         System.out.println("Lock Free Skip PQ");
         pq.IPriorityQueue<Integer> pq = new pq.LFPrioritySkipQueue<Integer>();
@@ -30,7 +37,7 @@ public class SequentialTest {
     // Helper Functions
     public void test_basic_sequential(pq.IPriorityQueue<Integer> pq) {
         long startTime = System.nanoTime();
-        int amount = 60000;
+        int amount = 30000;
         for (int i = 0; i < amount; i++) {
             // System.out.println("Insert: " + i);
             pq.insert(i, i);

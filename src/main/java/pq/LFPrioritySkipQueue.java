@@ -175,7 +175,6 @@ public class LFPrioritySkipQueue<T> implements IPriorityQueue<T> {
             Node<T> succ;
             
             while (true) {
-                
                 // Find location for new item with preds and succs arrays
                 // if false, then key does not exist and you early return
                 // if true, then key exists
@@ -230,10 +229,10 @@ public class LFPrioritySkipQueue<T> implements IPriorityQueue<T> {
                 if (!curr.marked.get()) {
                     if (curr.marked.compareAndSet(false, true)) {
                         return curr;
-                    } else {
-                        curr = curr.next[0].getReference();
                     }
                 }
+                // Someone already marked the min, try to get min again
+                curr = curr.next[0].getReference();
             }
             return null; // no unmarked nodes
         }
