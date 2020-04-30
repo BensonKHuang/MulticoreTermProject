@@ -1,5 +1,5 @@
 # Multicore Term Project
-Concurrent Priority Queue implementation (2020 EE 361C Multicore)
+Concurrent Priority Queue implementation (2020 - EE 361C Multicore)
 
 ### Authors
 Benson Huang, Wesley Klock, Steven (Zijian) Wang, Kyle Zhou
@@ -8,7 +8,7 @@ Benson Huang, Wesley Klock, Steven (Zijian) Wang, Kyle Zhou
 - Coarse-Grained Lock Priority Queue (Array based)
 - Fine-Grained Lock Priority Queue (Array based)
 - Lock-Free Priority Skip Queue (Skip List based)
-- Lock-Free Priority Queue (Ordered Linked List based... *Quite Slow*)
+- Lock-Free Priority Linked Queue (Ordered Linked List based... *Quite Slow*)
 
 We implemented various Lock Based and Lock Free Priority Queue implementations, with a test suite that automatically compares performance benchmarks.
 We tested using different thread counts and heavy Insert/RemoveMin function calls. One notable feature is the generic implementation of our Priority Queue allows any data structure to be used, as long as a priority is provided. 
@@ -36,8 +36,10 @@ args[0]:
         -f      Fine Grained PQ
         -s      Lock Free Priority SkipQueue
         -l      Lock Free Priority LinkedQueue
+
 args[1]:
         #       Number of Threads
+
 args[2]:
         #       Amount of work per threads
 
@@ -66,7 +68,8 @@ Examples:
 
 
 ### Concurrent Test Interpretation/Example run
-Our `mvn test -Dtest=ConcurrentTest` tests perform 60,000 insertions and deletions divided over 1 to 6 threads.
+Our `mvn test -Dtest=ConcurrentTest` tests perform 300,000 insertions and deletions divided over 1 to 6 threads.
+These values are modifiable in `ConcurrentTest.java`
 
 ```json
 [INFO] -------------------------------------------------------
