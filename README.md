@@ -47,9 +47,13 @@ Examples:
 ```
 
 ### Example Command Line Tests:
+
 `mvn exec:java -Dexec.mainClass=pq.App -Dexec.args="-c 6 20"`
+
 `mvn exec:java -Dexec.mainClass=pq.App -Dexec.args="-f 6 20"`
+
 `mvn exec:java -Dexec.mainClass=pq.App -Dexec.args="-s 6 20"`
+
 `mvn exec:java -Dexec.mainClass=pq.App -Dexec.args="-l 6 20"`
 
 ## running tests:
@@ -57,6 +61,7 @@ Examples:
 
 ### Running individual tests:
 `mvn test -Dtest=SequentialTest`
+
 `mvn test -Dtest=ConcurrentTest`
 
 
